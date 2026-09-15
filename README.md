@@ -22,3 +22,15 @@
 **Запуск автотестов и создание HTML-отчета о покрытии**
 
 >  `$ pytest --cov=praktikum --cov-report=html`
+open htmlcov/index.html
+
+rm -rf htmlcov/
+pytest tests/ -v --cov=. --cov-report=html
+open htmlcov/index.html
+
+rm -rf allure-results/
+pytest tests/ -v --alluredir=allure-results
+allure serve allure-results
+
+zip -r htmlcov.zip htmlcov/
+zip -r allure-results.zip allure-results/
