@@ -7,6 +7,7 @@ from ingredient_types import INGREDIENT_TYPE_SAUCE, INGREDIENT_TYPE_FILLING
 
 class TestIngredient:
 
+    @allure.title('Ingredient сохраняет тип: {param_id}')
     @pytest.mark.parametrize('ingredient_type, name, price', [
         (INGREDIENT_TYPE_SAUCE, "hot sauce", 100),
         (INGREDIENT_TYPE_SAUCE, "sour cream", 200),
@@ -14,69 +15,121 @@ class TestIngredient:
         (INGREDIENT_TYPE_FILLING, "cutlet", 100),
         (INGREDIENT_TYPE_FILLING, "dinosaur", 200),
         (INGREDIENT_TYPE_FILLING, "sausage", 300),
+    ], ids=[
+        "SAUCE - hot sauce",
+        "SAUCE - sour cream",
+        "SAUCE - chili sauce",
+        "FILLING - cutlet",
+        "FILLING - dinosaur",
+        "FILLING - sausage",
     ])
-    @allure.title('Ingredient сохраняет-тип-название-цена')
-    def test_ingredient_init(self, ingredient_type, name, price):
+    def test_ingredient_init_type(self, ingredient_type, name, price):
         ingredient = Ingredient(ingredient_type, name, price)
-
-        input_data = (
-            f"Type: {ingredient_type}\n"
-            f"Name: {name}\n"
-            f"Price: {price}"
-        )
         allure.attach(
             name="Входные данные",
-            body=input_data,
+            body=f"Type: {ingredient_type}\nName: {name}\nPrice: {price}",
             attachment_type=allure.attachment_type.TEXT
         )
-        with allure.step(f'Проверить type равен  ({ingredient_type})'): 
-            assert ingredient.type == ingredient_type
-        with allure.step(f'Проверить name равен ("{name}")'):
-            assert ingredient.name == name
-        with allure.step(f'Проверить price равен ({price})'):
-            assert ingredient.price == price
+        assert ingredient.type == ingredient_type, f"Тип должен быть {ingredient_type}"
 
+    @allure.title('Ingredient сохраняет название: {param_id}')
+    @pytest.mark.parametrize('ingredient_type, name, price', [
+        (INGREDIENT_TYPE_SAUCE, "hot sauce", 100),
+        (INGREDIENT_TYPE_SAUCE, "sour cream", 200),
+        (INGREDIENT_TYPE_SAUCE, "chili sauce", 300),
+        (INGREDIENT_TYPE_FILLING, "cutlet", 100),
+        (INGREDIENT_TYPE_FILLING, "dinosaur", 200),
+        (INGREDIENT_TYPE_FILLING, "sausage", 300),
+    ], ids=[
+        "SAUCE - hot sauce",
+        "SAUCE - sour cream",
+        "SAUCE - chili sauce",
+        "FILLING - cutlet",
+        "FILLING - dinosaur",
+        "FILLING - sausage",
+    ])
+    def test_ingredient_init_name(self, ingredient_type, name, price):
+        ingredient = Ingredient(ingredient_type, name, price)
+        allure.attach(
+            name="Входные данные",
+            body=f"Type: {ingredient_type}\nName: {name}\nPrice: {price}",
+            attachment_type=allure.attachment_type.TEXT
+        )
+        assert ingredient.name == name, f"Название должно быть {name}"
 
+    @allure.title('Ingredient сохраняет цену: {param_id}')
+    @pytest.mark.parametrize('ingredient_type, name, price', [
+        (INGREDIENT_TYPE_SAUCE, "hot sauce", 100),
+        (INGREDIENT_TYPE_SAUCE, "sour cream", 200),
+        (INGREDIENT_TYPE_SAUCE, "chili sauce", 300),
+        (INGREDIENT_TYPE_FILLING, "cutlet", 100),
+        (INGREDIENT_TYPE_FILLING, "dinosaur", 200),
+        (INGREDIENT_TYPE_FILLING, "sausage", 300),
+    ], ids=[
+        "SAUCE - hot sauce — 100",
+        "SAUCE - sour cream — 200",
+        "SAUCE - chili sauce — 300",
+        "FILLING - cutlet — 100",
+        "FILLING - dinosaur — 200",
+        "FILLING - sausage — 300",
+    ])
+    def test_ingredient_init_price(self, ingredient_type, name, price):
+        ingredient = Ingredient(ingredient_type, name, price)
+        allure.attach(
+            name="Входные данные",
+            body=f"Type: {ingredient_type}\nName: {name}\nPrice: {price}",
+            attachment_type=allure.attachment_type.TEXT
+        )
+        assert ingredient.price == price, f"Цена должна быть {price}"
 
+    @allure.title('get_price возвращает цену: {param_id}')
     @pytest.mark.parametrize('ingredient_type, name, price', [
         (INGREDIENT_TYPE_SAUCE, "hot sauce", 100),
         (INGREDIENT_TYPE_FILLING, "dinosaur", 200),
+    ], ids=[
+        "hot sauce — 100",
+        "dinosaur — 200",
     ])
-    @allure.title('get_price возвращает цену: {price}')
     def test_get_price(self, ingredient_type, name, price):
         ingredient = Ingredient(ingredient_type, name, price)
-
-        input_data = (
-            f"Type: {ingredient_type}\n"
-            f"Name: {name}\n"
-            f"Price: {price}"
-        )
         allure.attach(
             name="Входные данные",
-            body=input_data,
+            body=f"Type: {ingredient_type}\nName: {name}\nPrice: {price}",
             attachment_type=allure.attachment_type.TEXT
         )
-        with allure.step(f'get_price проверить - цена ({price})'):
-            assert ingredient.get_price() == price
+        assert ingredient.get_price() == price, f"get_price должен вернуть {price}"
 
+    @allure.title('get_name возвращает название: {param_id}')
     @pytest.mark.parametrize('ingredient_type, name, price', [
         (INGREDIENT_TYPE_SAUCE, "chili sauce", 300),
         (INGREDIENT_TYPE_FILLING, "cutlet", 100),
+    ], ids=[
+        "chili sauce",
+        "cutlet",
     ])
-    @allure.title('get_name проверить - название: {name}')
     def test_get_name(self, ingredient_type, name, price):
         ingredient = Ingredient(ingredient_type, name, price)
-        with allure.step(f'get_name проверить - имя ({name})'):
-            assert ingredient.get_name() == name
+        allure.attach(
+            name="Входные данные",
+            body=f"Type: {ingredient_type}\nName: {name}\nPrice: {price}",
+            attachment_type=allure.attachment_type.TEXT
+        )
+        assert ingredient.get_name() == name, f"get_name должен вернуть {name}"
 
-
-
+    @allure.title('get_type возвращает тип: {param_id}')
     @pytest.mark.parametrize('ingredient_type, name, price', [
         (INGREDIENT_TYPE_SAUCE, "hot sauce", 100),
         (INGREDIENT_TYPE_FILLING, "cutlet", 100),
+    ], ids=[
+        "SAUCE (соус)",
+        "FILLING (начинка)",
     ])
-    @allure.title('get_type проверить - тип: {ingredient_type}')
     def test_get_type(self, ingredient_type, name, price):
         ingredient = Ingredient(ingredient_type, name, price)
-        with allure.step(f'get_type проверить - тип ({ingredient_type})'):
-            assert ingredient.get_type() == ingredient_type
+        allure.attach(
+            name="Входные данные",
+            body=f"Type: {ingredient_type}\nName: {name}\nPrice: {price}",
+            attachment_type=allure.attachment_type.TEXT
+        )
+        assert ingredient.get_type() == ingredient_type, f"get_type должен вернуть {ingredient_type}"
+
